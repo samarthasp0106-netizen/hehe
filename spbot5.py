@@ -270,7 +270,7 @@ def load_users_data():
                 if 'pairs' not in data:
                     data['pairs'] = None
                 if 'switch_minutes' not in data:
-                    data['switch_minutes'] = 5
+                    data['switch_minutes'] = 2
                 if 'threads' not in data:
                     data['threads'] = 1
                 users_data[user_id] = data
@@ -664,7 +664,7 @@ def reader_thread(user_id: int, chat_id: int, master_fd: int, username: str, pas
             if user_id in users_data:
                 data = users_data[user_id]
             else:
-                data = {'accounts': [], 'default': None, 'pairs': None, 'switch_minutes': 5, 'threads': 1}
+                data = {'accounts': [], 'default': None, 'pairs': None, 'switch_minutes': 2, 'threads': 1}
             # normalize incoming username
             norm_username = username.strip().lower()
 
@@ -927,7 +927,7 @@ async def plogin_get_password(update: Update, context: ContextTypes.DEFAULT_TYPE
                 'accounts': [],
                 'default': None,
                 'pairs': None,
-                'switch_minutes': 5,
+                'switch_minutes': 2,
                 'threads': 1,
             }
             save_user_data(user_id, users_data[user_id])
@@ -1015,7 +1015,7 @@ async def slogin_get_username(update: Update, context: ContextTypes.DEFAULT_TYPE
 
     # Save to user data
     if user_id not in users_data:
-        users_data[user_id] = {'accounts': [], 'default': None, 'pairs': None, 'switch_minutes': 5, 'threads': 1}
+        users_data[user_id] = {'accounts': [], 'default': None, 'pairs': None, 'switch_minutes': 2, 'threads': 1}
         save_user_data(user_id, users_data[user_id])
     data = users_data[user_id]
     found = False
@@ -1256,7 +1256,7 @@ async def viewpref(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         msg += f"Default: {default_u} ⭐\n"
     else:
         msg += "Pairs: no\n"
-    switch_min = data.get('switch_minutes', 5)
+    switch_min = data.get('switch_minutes', 2)
     msg += f"⏱️ Switch interval: {switch_min} minutes\n"
     threads = data.get('threads', 1)
     msg += f"🧵 Threads: {threads}\n"
@@ -1463,7 +1463,7 @@ async def get_messages(update: Update, context: ContextTypes.DEFAULT_TYPE) -> in
         warning = "⚠️ Warning: You may get chat ban if you use a single account too long. Use /pair to make multi-account rotation.\n\n"
     else:
         warning = ""
-    switch_minutes = data.get('switch_minutes', 5)
+    switch_minutes = data.get('switch_minutes', 2)
     threads_n = data.get('threads', 1)
     tasks = users_tasks.get(user_id, [])
     running_msg = [t for t in tasks if t.get('type') == 'message_attack' and t['status'] == 'running' and t['proc'].poll() is None]
